@@ -39,6 +39,7 @@ namespace Zillow.Services
                 }
             }
             */
+
             string filePath = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\11zp44tx.xls";
             
             if (File.Exists(filePath))
@@ -80,7 +81,11 @@ namespace Zillow.Services
             }
             Console.ReadLine();
 
-              
+            // NEW PROGRAM FOR READING THE CUSTOM LIST
+
+            //string filePath = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\2011testdata.txt";
+            //StreamReader fileReader = new StreamReader(filePath);
+
 
         }
     }
