@@ -39,8 +39,8 @@ namespace Zillow.Services
                 }
             }
             */
-            //string filePath = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\11zp44tx.csv";
-            string filePath = @"C:\Users\Parox\Desktop\big data\TXtaxData\2011.xls";
+            string filePath = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\11zp44tx.xls";
+            
             if (File.Exists(filePath))
             {
                 Console.WriteLine("File Found");
@@ -61,8 +61,8 @@ namespace Zillow.Services
             List<ZipCodeData> TX2011data = new List<ZipCodeData>();
             int x = 20;
             int y = 0;
-            // this will NOT WORK because some entries could be zero
-            while(excel.readCell(x,y)!= 0){
+
+            while(excel.readCell(x,y)!= 99999){
                 ZipCodeData entry = new ZipCodeData();
                 entry.zipCodeID = excel.readCell(x, y).ToString();
                 // moves over 2 columns
@@ -76,8 +76,10 @@ namespace Zillow.Services
                 // resets to the first column
                 y = 0;
                 x += 8;
-                Console.ReadLine(); // pause
+                //Console.ReadLine(); // pause
             }
+            Console.ReadLine();
+
               
 
         }
