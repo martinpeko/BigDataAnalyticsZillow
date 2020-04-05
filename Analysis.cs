@@ -23,7 +23,7 @@ namespace Zillow.Services
 
                 ZipCodeData entry = new ZipCodeData();
                 entry.zipCodeID = LineAsArray[0];
-                entry.population = double.Parse(LineAsArray[1]);
+                entry.totalReturns = double.Parse(LineAsArray[1]);
                 entry.returnsAbove100k = int.Parse(LineAsArray[2]);
                 entry.returnsAbove200k = int.Parse(LineAsArray[3]);
                 list.Add(entry);
@@ -57,6 +57,7 @@ namespace Zillow.Services
         {
             string filePath2011 = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\2011testdata.txt";
             string filePath2017 = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\2017testdata.txt";
+            string filePathZHVI = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\Zip_Zhvi_AllHomeValues_NoHeaders.csv";
 
             List<ZipCodeData> TX2011data = new List<ZipCodeData>();
             List<ZipCodeData> TX2017data = new List<ZipCodeData>();
@@ -71,6 +72,29 @@ namespace Zillow.Services
             analyze(TX2011data, TX2017data);
 
             Console.ReadLine();
+
+            StreamReader homeValueReader = new StreamReader(filePathZHVI);
+
+            while (!homeValueReader.EndOfStream)
+            {
+                ZipCodeHomeValue entry = new ZipCodeHomeValue();
+                string line = homeValueReader.ReadLine();
+                char token = ',';
+
+                string[] LineAsArray = line.Split(token);
+                entry.zipCode = LineAsArray[1];
+
+                // many zip codes do not have data until a later date, for example some start in 2015
+                if (LineAsArray[184] != "")
+                {
+                    entry.Price2011 = Double.Parse(LineAsArray[184]);
+                }
+
+                // keep in mind array space 184 is only January 2011, this program should take the 12 months of 2011 and average the price
+                // by doing so you are also losing precision on the data, you may want to use that data too
+                Console.WriteLine(entry.zipCode + " : " + entry.Price2011); 
+                Console.ReadLine();
+            }
         }
     }
 }
