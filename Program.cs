@@ -40,7 +40,7 @@ namespace Zillow.Services
             }
             */
 
-            string filePath = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\11zp44tx.xls";
+            string filePath = @"C:C:\Users\Parox\Desktop\bigdata\TXtaxData\2011.xls";
             
             if (File.Exists(filePath))
             {
@@ -59,24 +59,35 @@ namespace Zillow.Services
             Console.ReadLine();
 
             //starting to assemble a method to reading the important parts of the tax data
-            List<ZipCodeData> TX2011data = new List<ZipCodeData>();
-            int x = 20;
+            List<ZipCodeData> taxData = new List<ZipCodeData>();
+            int x = 14; 
             int y = 0;
 
             while(excel.readCell(x,y)!= 99999){
                 ZipCodeData entry = new ZipCodeData();
                 entry.zipCodeID = excel.readCell(x, y).ToString();
-                // moves over 2 columns
-                y += 2;
+                
+                y += 2; // moves over 2 columns
+                entry.totalReturns = (int)excel.readCell(x, y);
+                taxData.Add(entry);
+
+                x += 5;
+                entry.returnsAbove100k = (int)excel.readCell(x, y);
+                taxData.Add(entry);
+
+                x += 1;
                 entry.returnsAbove200k = (int)excel.readCell(x, y);
-                TX2011data.Add(entry);
+                taxData.Add(entry);
+
                 Console.WriteLine(entry.zipCodeID);
+                Console.WriteLine(entry.totalReturns);
+                Console.WriteLine(entry.returnsAbove100k);
                 Console.WriteLine(entry.returnsAbove200k);
 
-                // moves down 8 rows, to the next 200k+ zip code row
+                // moves down 2 rows, to the next new zipcode
                 // resets to the first column
                 y = 0;
-                x += 8;
+                x += 2;
                 //Console.ReadLine(); // pause
             }
             Console.ReadLine();
