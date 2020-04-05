@@ -1,0 +1,8 @@
+C:\Users\Parox\source\repos\TaxDataRead\TaxDataRead\obj\Debug\TaxDataRead.csprojAssemblyReference.cache
+C:\Users\Parox\source\repos\TaxDataRead\TaxDataRead\obj\Debug\TaxDataRead.csproj.CoreCompileInputs.cache
+C:\Users\Parox\source\repos\TaxDataRead\TaxDataRead\obj\Debug\TaxDataRead.csproj.ResolveComReference.cache
+C:\Users\Parox\source\repos\TaxDataRead\TaxDataRead\bin\Debug\TaxDataRead.exe.config
+C:\Users\Parox\source\repos\TaxDataRead\TaxDataRead\bin\Debug\TaxDataRead.exe
+C:\Users\Parox\source\repos\TaxDataRead\TaxDataRead\bin\Debug\TaxDataRead.pdb
+C:\Users\Parox\source\repos\TaxDataRead\TaxDataRead\obj\Debug\TaxDataRead.exe
+C:\Users\Parox\source\repos\TaxDataRead\TaxDataRead\obj\Debug\TaxDataRead.pdb
