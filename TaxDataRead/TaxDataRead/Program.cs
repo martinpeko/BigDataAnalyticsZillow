@@ -47,9 +47,9 @@ namespace TaxDataRead
                 x += 1;
                 entry.returnsAbove200k = (int)excel.readCell(x, y);
 
-                allZipcodes.Add(entry.zipCodeID + ", " +
-                                entry.totalReturns.ToString() + ", " +
-                                entry.returnsAbove100k.ToString() + ", " +
+                allZipcodes.Add(entry.zipCodeID + "," +
+                                entry.totalReturns.ToString() + "," +
+                                entry.returnsAbove100k.ToString() + "," +
                                 entry.returnsAbove200k.ToString());
 
                 // moves down 2 rows and resets to first colomn to get next zipcode
