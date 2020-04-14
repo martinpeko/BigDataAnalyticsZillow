@@ -41,22 +41,55 @@ namespace Zillow.Services
         public static void analyze(List<ZipCodeData> previousYearList, List<ZipCodeData> recentYearList)
         {
             double percentDifference;
-            for (int x = 0; x < recentYearList.Count; x++)
+
+
+            //Console.WriteLine(previousYearList.Count); //1624 entries
+            //Console.WriteLine(recentYearList.Count); // 1619 entries
+            //Console.ReadLine();
+            // this is interesting because I would have thought that the recent list would have more zip codes being added
+            
+
+            // potential solutions to having mismatches in the zip code id's - 2 variables and you increment them separately. once one misses you recalibrate the variables?
+            //or you could remove the entry in the list if it does not pair at all.
+
+            for (int x = 0; x < recentYearList.Count; x++) // use recentYearList here because it will be longer than previousYearList due to added zip codes
             {
                 if (previousYearList[x].zipCodeID != recentYearList[x].zipCodeID)
                 {
-                    Console.WriteLine("Discrepancy found between zip codes" + previousYearList[x].zipCodeID + " and " + recentYearList[x].zipCodeID);
-                    continue;
+                    Console.WriteLine("Discrepancy found between zip codes " + previousYearList[x].zipCodeID + " and " + recentYearList[x].zipCodeID);
+                    //continue;
+                    // solve this by re-searching from the current index onwards to find the missing zip
+                    for(int y =0; y<recentYearList.Count; y++)
+                    {
+                        if(previousYearList[y].zipCodeID == recentYearList[x].zipCodeID)
+                        {
+
+                            /* NOTE TO SELF, MOVE THE WRITELINE TO A FUNCTION OR ELSE YOU WILL HAVE BIG CONFUSION MOVING FORWARD */
+                        }
+                    }
                 }
-                percentDifference = ((double)(recentYearList[x].returnsAbove200k - previousYearList[x].returnsAbove200k) / previousYearList[x].returnsAbove200k);
-                Console.WriteLine("Zip Code: " + previousYearList[x].zipCodeID + " Net change in earners above $200k: " + percentDifference.ToString("P", CultureInfo.InvariantCulture));
+
+                //// fixes the output of "infinity" percent increase
+                //if (previousYearList[x].returnsAbove200k == 0)
+                //{
+                //    Console.WriteLine("Zip Code: " + previousYearList[x].zipCodeID + " | Net change in earners above $200k: +" + recentYearList[x].returnsAbove200k + " people. (started at zero)");
+                //}
+                //else if(recentYearList[x].returnsAbove200k == 0)
+                //{
+                //    Console.WriteLine("Zip Code: " + previousYearList[x].zipCodeID + " | Net change in earners above $200k: +" + recentYearList[x].returnsAbove200k + " people. (started at zero)");
+                //}
+                //else
+                //{
+                    percentDifference = ((double)(recentYearList[x].returnsAbove200k - previousYearList[x].returnsAbove200k) / previousYearList[x].returnsAbove200k);
+                    Console.WriteLine("Zip Code: " + previousYearList[x].zipCodeID + " | Net change in earners above $200k: " + percentDifference.ToString("P", CultureInfo.InvariantCulture));
+                //}
             }
         }
 
         static void Main(string[] args)
         {
-            string filePath2011 = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\2011testdata.txt";
-            string filePath2017 = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\2017testdata.txt";
+            string filePath2011 = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\ProcessedInput\TX\2011.txt";
+            string filePath2017 = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\ProcessedInput\TX\2017.txt";
             string filePathZHVI = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\Zip_Zhvi_AllHomeValues_NoHeaders.csv";
 
             List<ZipCodeData> TX2011data = new List<ZipCodeData>();
