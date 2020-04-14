@@ -47,27 +47,46 @@ namespace Zillow.Services
             //Console.WriteLine(recentYearList.Count); // 1619 entries
             //Console.ReadLine();
             // this is interesting because I would have thought that the recent list would have more zip codes being added
-            
+
 
             // potential solutions to having mismatches in the zip code id's - 2 variables and you increment them separately. once one misses you recalibrate the variables?
             //or you could remove the entry in the list if it does not pair at all.
-
+            int y = 0;
             for (int x = 0; x < recentYearList.Count; x++) // use recentYearList here because it will be longer than previousYearList due to added zip codes
             {
+                y = x;
                 if (previousYearList[x].zipCodeID != recentYearList[x].zipCodeID)
                 {
                     Console.WriteLine("Discrepancy found between zip codes " + previousYearList[x].zipCodeID + " and " + recentYearList[x].zipCodeID);
-                    //continue;
-                    // solve this by re-searching from the current index onwards to find the missing zip
-                    for(int y =0; y<recentYearList.Count; y++)
+                    if (previousYearList[x + 1].zipCodeID == recentYearList[x].zipCodeID)
                     {
-                        if(previousYearList[y].zipCodeID == recentYearList[x].zipCodeID)
-                        {
-
-                            /* NOTE TO SELF, MOVE THE WRITELINE TO A FUNCTION OR ELSE YOU WILL HAVE BIG CONFUSION MOVING FORWARD */
-                        }
+                        Console.WriteLine("FOUND");
+                    }
+                    else if (previousYearList[x].zipCodeID == recentYearList[x + 1].zipCodeID)
+                    {
+                        Console.WriteLine("FOUND");
+                    }
+                    else if (previousYearList[x+2].zipCodeID == recentYearList[x].zipCodeID)
+                    {
+                        Console.WriteLine("FOUND");
+                    }
+                    else if(previousYearList[x].zipCodeID == recentYearList[x + 2].zipCodeID)
+                    {
+                        Console.WriteLine("FOUND");
+                    }
+                    else
+                    {
+                        Console.WriteLine("NOT FOUND");
                     }
                 }
+                else
+                {
+                    percentDifference = ((double)(recentYearList[x].returnsAbove200k - previousYearList[x].returnsAbove200k) / previousYearList[x].returnsAbove200k);
+                    Console.WriteLine("Zip Code: " + previousYearList[x].zipCodeID + " | Net change in earners above $200k: " + percentDifference.ToString("P", CultureInfo.InvariantCulture));
+                }
+
+
+                /* NOTE TO SELF, MOVE THE WRITELINE TO A FUNCTION OR ELSE YOU WILL HAVE BIG CONFUSION MOVING FORWARD */
 
                 //// fixes the output of "infinity" percent increase
                 //if (previousYearList[x].returnsAbove200k == 0)
@@ -80,11 +99,10 @@ namespace Zillow.Services
                 //}
                 //else
                 //{
-                    percentDifference = ((double)(recentYearList[x].returnsAbove200k - previousYearList[x].returnsAbove200k) / previousYearList[x].returnsAbove200k);
-                    Console.WriteLine("Zip Code: " + previousYearList[x].zipCodeID + " | Net change in earners above $200k: " + percentDifference.ToString("P", CultureInfo.InvariantCulture));
                 //}
             }
         }
+        
 
         static void Main(string[] args)
         {
