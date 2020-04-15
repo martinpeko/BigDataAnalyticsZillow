@@ -28,7 +28,7 @@ namespace TaxDataRead
             // IT STARTS FROM 1,1
             row++;
             col++;
-
+            
             if (ws.Cells[row, col].Value2 != null)
             {
                 return ws.Cells[row, col].Value2;
