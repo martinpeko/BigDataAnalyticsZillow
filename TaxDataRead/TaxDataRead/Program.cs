@@ -81,7 +81,7 @@ namespace TaxDataRead
 
         static void realEstateProcess()
         {
-            string inputPath = @"C:\Users\Parox\Documents\GitHub\BigDataAnalyticsZillow\TaxDataRead\RealEstateTest.xlsx";
+            string inputPath = @"C:\Users\Parox\Documents\GitHub\BigDataAnalyticsZillow\TaxDataRead\RealEstateTX.xlsx";
             string outputPath = @"C:\Users\Parox\Documents\GitHub\BigDataAnalyticsZillow\TaxDataRead\RealEstateTX.txt";
 
             if (File.Exists(inputPath))
@@ -96,8 +96,8 @@ namespace TaxDataRead
             Excel excel = new Excel(inputPath, 1);
             List<string> realEstate = new List<string>(); // list to house all zipcodes and yearly averge real estate worth
 
-            int x = 2;
-            int y = 2;
+            int x = 1;
+            int y = 1;
             int yearEndMarker = 1;
             string allYearAvg = "";
 
@@ -122,10 +122,10 @@ namespace TaxDataRead
                     ++y; // go to the next month
                     ++yearEndMarker; // keeps track of when a year is over
                 }
-
                 realEstate.Add(data.zipcodeID + allYearAvg.ToString()); // adds line to list with zipcode and 2011s - 2017s average real estate price
+                allYearAvg = ""; // reset the yearly averages as to not interfere with the next zipcode
                 ++x; // incrementing the row we are on, and resetting y to the zipcode colomn
-                y = 2;
+                y = 1;
 
                 File.WriteAllLines(outputPath, realEstate);
                 Console.WriteLine("Finished " + inputPath + ".");
