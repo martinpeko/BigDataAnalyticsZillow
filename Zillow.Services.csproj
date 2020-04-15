@@ -80,6 +80,7 @@
     <Compile Include="ZillowURI.cs" />
     <Compile Include="ZipCodeData.cs" />
     <Compile Include="ZipCodeHomeValue.cs" />
+    <Compile Include="ZipPriceEveryYear.cs" />
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />

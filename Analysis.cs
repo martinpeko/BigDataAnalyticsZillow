@@ -105,7 +105,54 @@ namespace Zillow.Services
             }
             output.Close();
         }
-        
+        public static double findBaseline(string pricesPath, int yearOne, int yearTwo)
+        {
+            double zipBaseLine = 0;
+
+
+            StreamReader input = new StreamReader(pricesPath);
+
+            List<ZipPriceEveryYear> ZipPriceList = new List<ZipPriceEveryYear>();
+
+            while (!input.EndOfStream)
+            {
+                string line = input.ReadLine();
+
+                char token = ',';
+
+                string[] lineAsArray = line.Split(token);
+
+                ZipPriceEveryYear entry = new ZipPriceEveryYear();
+
+                entry.zipCode = lineAsArray[0];
+                entry.price2011 = Double.Parse(lineAsArray[1]);
+                entry.price2012 = Double.Parse(lineAsArray[2]);
+                entry.price2013 = Double.Parse(lineAsArray[3]);
+                entry.price2014 = Double.Parse(lineAsArray[4]);
+                entry.price2015 = Double.Parse(lineAsArray[5]);
+                entry.price2016 = Double.Parse(lineAsArray[6]);
+                entry.price2017 = Double.Parse(lineAsArray[7]);
+                
+                ZipPriceList.Add(entry);
+            }
+
+            string outputPath = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\TaxDataRead\priceIncreases.json";
+            StreamWriter output = new StreamWriter(outputPath);
+            //            "ZIPVALS" : [' +
+            //'{ "ZIP":"75801" , "VAL":"-40"},' +
+            //'{ "ZIP":"75707" , "VAL":"-40"},' +
+            //'{ "ZIP":"75701" , "VAL":"-50"} ]}';
+            output.WriteLine("\"ZIPVALS\" : [' +");
+            foreach(var listEntry in ZipPriceList)
+            {
+                zipBaseLine += listEntry.percentIncrease();
+                Console.WriteLine(listEntry.zipCode + ": " + listEntry.percentIncrease());
+                output.WriteLine("'{ \"ZIP\":\"" + listEntry.zipCode + "\" , \"VAL\":\"" + listEntry.percentIncrease() + "\"},' +");
+            }
+
+            zipBaseLine /= ZipPriceList.Count;
+            return zipBaseLine;
+        }
 
         static void Main(string[] args)
         {
@@ -127,28 +174,35 @@ namespace Zillow.Services
 
             Console.ReadLine();
 
-            StreamReader homeValueReader = new StreamReader(filePathZHVI);
+            string pricesPath = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\TaxDataRead\RealEstateTX.txt";
 
-            while (!homeValueReader.EndOfStream)
-            {
-                ZipCodeHomeValue entry = new ZipCodeHomeValue();
-                string line = homeValueReader.ReadLine();
-                char token = ',';
+            Console.WriteLine("The average return for all zip codes in Texas from year 2011 to 2017 is " + findBaseline(pricesPath, 1, 7));
 
-                string[] LineAsArray = line.Split(token);
-                entry.zipCode = LineAsArray[1];
+            Console.ReadLine();
 
-                // many zip codes do not have data until a later date, for example some start in 2015
-                if (LineAsArray[184] != "")
-                {
-                    entry.Price2011 = Double.Parse(LineAsArray[184]);
-                }
 
-                // keep in mind array space 184 is only January 2011, this program should take the 12 months of 2011 and average the price
-                // by doing so you are also losing precision on the data, you may want to use that data too
-                Console.WriteLine(entry.zipCode + " : " + entry.Price2011); 
-                Console.ReadLine();
-            }
+            //StreamReader homeValueReader = new StreamReader(filePathZHVI);
+
+            //while (!homeValueReader.EndOfStream)
+            //{
+            //    ZipCodeHomeValue entry = new ZipCodeHomeValue();
+            //    string line = homeValueReader.ReadLine();
+            //    char token = ',';
+
+            //    string[] LineAsArray = line.Split(token);
+            //    entry.zipCode = LineAsArray[1];
+
+            //    // many zip codes do not have data until a later date, for example some start in 2015
+            //    if (LineAsArray[184] != "")
+            //    {
+            //        entry.Price2011 = Double.Parse(LineAsArray[184]);
+            //    }
+
+            //    // keep in mind array space 184 is only January 2011, this program should take the 12 months of 2011 and average the price
+            //    // by doing so you are also losing precision on the data, you may want to use that data too
+            //    Console.WriteLine(entry.zipCode + " : " + entry.Price2011); 
+            //    Console.ReadLine();
+            //}
         }
     }
 }
