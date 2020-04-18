@@ -41,15 +41,18 @@ namespace Zillow.Services
         public static void analyze(List<ZipCodeData> previousYearList, List<ZipCodeData> recentYearList)
         {
             double percentDifference;
-            string analysisOutput = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\ProcessedInput\TX\2011-2017_output.txt";
+            string analysisOutput = @"C:\Users\marti\source\repos\BigDataAnalyticsZillow\ProcessedInput\TX\2011-2017salaryincrease.json";
             StreamWriter output = new StreamWriter(analysisOutput, false);
+
+
+
 
             //Console.WriteLine(previousYearList.Count); //1624 entries
             //Console.WriteLine(recentYearList.Count); // 1619 entries
             //Console.ReadLine();
             // this is interesting because I would have thought that the recent list would have more zip codes being added
 
-
+            output.WriteLine("{ \"ZIPVALS\" : [");
             // potential solutions to having mismatches in the zip code id's - 2 variables and you increment them separately. once one misses you recalibrate the variables?
             //or you could remove the entry in the list if it does not pair at all.
             int y = 0;
@@ -67,9 +70,20 @@ namespace Zillow.Services
                             foundMissingZip = true;
                             Console.WriteLine("Found 2011 zip later in 2017 list");
                             y = y + z;
-                            percentDifference = ((double)(recentYearList[y].returnsAbove200k - previousYearList[x].returnsAbove200k) / previousYearList[x].returnsAbove200k);
-                            Console.WriteLine("Zip Code: " + previousYearList[x].zipCodeID + " | Net change in earners above $200k: " + percentDifference.ToString("P", CultureInfo.InvariantCulture));
-                            output.WriteLine(previousYearList[x].zipCodeID + "," + percentDifference.ToString("P", CultureInfo.InvariantCulture));
+                            percentDifference = recentYearList[y].returnsAbove200k - previousYearList[x].returnsAbove200k;
+                            output.WriteLine("{ \"ZIP\":\"" + previousYearList[x].zipCodeID + "\", \"VAL\":\"" + percentDifference.ToString() + "\"} ,");
+                            
+                            //percentDifference = ((double)(recentYearList[y].returnsAbove200k - previousYearList[x].returnsAbove200k) / previousYearList[x].returnsAbove200k);
+                            //percentDifference = percentDifference * 100;
+                            //Console.WriteLine("Zip Code: " + previousYearList[x].zipCodeID + " | Net change in earners above $200k: " + percentDifference.ToString("P", CultureInfo.InvariantCulture));
+                            //if (double.IsNaN(percentDifference))
+                            //{
+                            //    output.WriteLine("{ \"ZIP:\"" + previousYearList[x].zipCodeID + "\", \"VAL\":\"0\"} ,");
+                            //}
+                            //else
+                            //{
+                            //    output.WriteLine("{ \"ZIP:\"" + previousYearList[x].zipCodeID + "\", \"VAL\":\"" + percentDifference.ToString() + "\"} ,");
+                            //}
                         }
                     }
                     if (foundMissingZip == false)
@@ -82,9 +96,24 @@ namespace Zillow.Services
                 }
                 else
                 {
-                    percentDifference = ((double)(recentYearList[y].returnsAbove200k - previousYearList[x].returnsAbove200k) / previousYearList[x].returnsAbove200k);
-                    Console.WriteLine("Zip Code: " + previousYearList[x].zipCodeID + " | Net change in earners above $200k: " + percentDifference.ToString("P", CultureInfo.InvariantCulture));
-                    output.WriteLine(previousYearList[x].zipCodeID + "," + percentDifference.ToString("P", CultureInfo.InvariantCulture));
+                    percentDifference = recentYearList[y].returnsAbove200k - previousYearList[x].returnsAbove200k;
+                    output.WriteLine("{ \"ZIP\":\"" + previousYearList[x].zipCodeID + "\", \"VAL\":\"" + percentDifference.ToString() + "\"} ,");
+
+                    //percentDifference = ((double)(recentYearList[y].returnsAbove200k - previousYearList[x].returnsAbove200k) / previousYearList[x].returnsAbove200k);
+                    //percentDifference = percentDifference * 100;
+                    //Console.WriteLine("Zip Code: " + previousYearList[x].zipCodeID + " | Net change in earners above $200k: " + percentDifference.ToString("P", CultureInfo.InvariantCulture));
+                    //if (double.IsNaN(percentDifference))
+                    //{
+                    //    output.WriteLine("{ \"ZIP:\"" + previousYearList[x].zipCodeID + "\", \"VAL\":\"0\"} ,");
+                    //}
+                    //else if(percentDifference == double.PositiveInfinity)
+                    //{
+
+                    //}
+                    //else
+                    //{
+                    //    output.WriteLine("{ \"ZIP:\"" + previousYearList[x].zipCodeID + "\", \"VAL\":\"" + percentDifference.ToString() + "\"} ,");
+                    //}
                 }
 
 
