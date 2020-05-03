@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<head>
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+</head>
+<style>
+#myDiv{
+width:960px;
+margin: 0 auto;
+}
+
+#myDiv2{
+width:960px;
+margin: 0 auto;
+}
+
+h1{
+  background-color: rgb(255, 218, 197);
+  color: black;
+  font-family: courier;
+  font-size: 200%;
+}
+
+p{
+  color: black;
+  font-family: courier;
+  font-size: 110%;
+}
+
+p1{
+  color: black;
+  font-family: courier;
+  font-size: 160%;
+}
+</style>
+<body>
+  <h1 style = "text-align:center ; padding-top:10px ; padding-bottom:10px">Texas Real Estate - Growth Visualization</h1>
+  <p style="padding-left:60px">
+  The Texas zipcodes we looked at for our demonstration are displayed in the following maps. For Map 1, the value associated with each zipcode is an indicator of real estate growth. This value was determined by taking into account multiple variables using our algorithm. The data represents growth from the years 2011 - 2018.
+  Higher values are associated with better real estate growth. Dallas is an interesting case in particular, with the zipcode 75208 showing a very high value of 242.6576!
+  </p>
+  <p1 style = "padding-left:400px">MAP 1</p1>
+  <div id='myDiv'></div>
+  <p style="padding-left:60px">
+  With Map 2 we aim to illustrate the population increase in the number of individuals who are making above $200,000 a year. The data represents growth from the years 2011 - 2018. This is to highlight a potential relationship between income levels and real estate value trends as seen in Map 1.
+  </p>
+  <p1 style = "padding-left:400px">MAP 2</p1>
+  <div id='myDiv2'></div>
+<script>
+  ///////////////////////////////////////////////////////////////
+  //function to draw a zipcode choropleth map
+  //six parameters:
+  //first is a JSON file of (zipcode,value) pairs
+  //second is total number of zipcode,value pairs
+  //third is a geoJSON file describing zip code shapes
+  //fourth is div for html location of map
+  //fifth is longitude
+  //sixth is latitude
+  //uses plotly and mapbox
+  function drawMap(file,lines,state,div,longi,lati){
+    var source = new XMLHttpRequest();
+    source.open("GET", file, false);
+    source.onreadystatechange = function (){
+      if(source.readyState === 4){
+        if(source.status === 200 || source.status == 0){
+          var result= source.responseText;
+
+          //from result:
+          //store zipcodes and values into arrays
+          //called zips and vals
+          var Obj = JSON.parse(result);
+          var zips = [];
+          var vals = [];
+          for (i = 0; i < lines; i++){
+            zips.push(Obj.ZIPVALS[i].ZIP);
+            vals.push(Obj.ZIPVALS[i].VAL);
+          }
+
+          //plotly mapbox type is chropleth
+          //id key is changed to be "ZCTA5CE10"
+          //locations are stored in zips
+          //z values are stored in vals
+          var data = [{
+            type: "choroplethmapbox", featureidkey: "properties.ZCTA5CE10", 
+            locations: zips,
+            z: vals,
+            geojson: state
+          }]; 
+    
+          //plotly mapbox properties
+          //needs access token for mapbox
+          var layout = {mapbox: {center: {lon: longi, lat: lati}, zoom: 4.5},
+                        width: 900, height:600};
+  
+          var config = {mapboxAccessToken: 
+          "pk.eyJ1IjoiamV2YW5zNjMiLCJhIjoiY2s4bm9iMXJ5MHhhYTNmbDNsaW5teTZhZSJ9.KFFOKt4hHIGyWUZ6gf86YQ"};
+
+          //draw mapbox      
+          Plotly.newPlot(div, data, layout, config);
+        }
+      }
+    }
+    source.send(null);
+  }
+  
+//draw texas map for (zipcode, score) 
+drawMap("https://gist.githubusercontent.com/jevans63/f0e549615ed6762a298c1a307bcdac6c/raw/3892942eced87da3db0cf97a6513435b7a8f7b03/gistfile1.txt", 
+        1559,
+        "https://raw.githubusercontent.com/OpenDataDE/State-zip-code-GeoJSON/master/tx_texas_zip_codes_geo.min.json",
+        'myDiv',
+        -99,
+        31);
+    
+//draw texas map for (zipcode, pop increase)
+drawMap("https://gist.githubusercontent.com/jevans63/8026b0ae6100d334ae2427135165391e/raw/3c053a2f53ecb9b5a850b9acc2c366c771a4869f/gistfile1.txt", 
+        1615,
+        "https://raw.githubusercontent.com/OpenDataDE/State-zip-code-GeoJSON/master/tx_texas_zip_codes_geo.min.json",
+        'myDiv2',
+        -99,
+        31);
+</script>
+</body>
+<footer>
+Created by Group 5 for CS43016. 4/18/2020
+</footer>
