@@ -1,3 +1,5 @@
+// This file tracks some of the zip codes that were created/merged and cannot be
+// compared properly between 2011 and 2017
 REMOVED entries:
 2017: 75470,100,0,0
 2011: 76261,105,0,0
